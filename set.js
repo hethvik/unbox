@@ -11,6 +11,7 @@ module.exports = function set(reference, pathParts, value) {
 
     for(; index < pathLength; index++){
         var key = pathParts[index];
+        if (isPrototypePolluted(key)) return false;
 
         if ((typeof result !== 'object' || result === null) && index < pathLength) {
             if (typeof key !== 'symbol' && !Number.isNaN(Number(key))) {
@@ -30,3 +31,6 @@ module.exports = function set(reference, pathParts, value) {
         }
     }
 };
+function isPrototypePolluted(key) {
+	return ['__proto__', 'prototype', 'constructor'].includes(key);
+  }
